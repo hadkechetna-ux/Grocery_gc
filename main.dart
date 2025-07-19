@@ -1,197 +1,156 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const GroceryApp());
+  runApp(const MaterialApp(
+    home: ProductDetailsPage(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-class GroceryApp extends StatelessWidget {
-  const GroceryApp({super.key});
+class ProductDetailsPage extends StatefulWidget {
+  const ProductDetailsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  int quantity = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F5),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green.shade700,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 0,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: ""),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        leading: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Icon(Icons.share_outlined, color: Colors.black),
+          )
         ],
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Top row with icons and location
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.location_on_outlined),
-                const Text(
-                  "Green Valley Point",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.notifications_none),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Delivery / Pickup switch
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildDeliveryToggle("Delivery", true),
-                  buildDeliveryToggle("Pickup", false),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Category Icons Row
-            SizedBox(
-              height: 80,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  buildCategory("assets/meats.png", "Meats"),
-                  buildCategory("assets/fresh.png", "Fresh"),
-                  buildCategory("assets/bakery.png", "Bakery"),
-                  buildCategory("assets/grains.png", "Grains"),
-                  buildCategory("assets/organic.png", "Organic"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text("Popular items", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                Text("See All", style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-
-            const SizedBox(height: 12),
-
-            // Product Card
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                    child: Image.asset("assets/farm_fresh.png"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Farm Fresh Produce",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("\$10.00", style: TextStyle(fontWeight: FontWeight.bold)),
-                            Row(children: [
-                              Icon(Icons.star, color: Colors.amber, size: 18),
-                              Text("3.5"),
-                            ]),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("Delivered", style: TextStyle(color: Colors.grey)),
-                            Text("Time 10 min", style: TextStyle(color: Colors.grey)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        const Text("Discount 5%", style: TextStyle(color: Colors.green)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildDeliveryToggle(String title, bool selected) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: BoxDecoration(
-          color: selected ? Colors.green.shade100 : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Center(
-          child: Text(
-            title,
+        title: const Text("Products Details",
             style: TextStyle(
-              color: selected ? Colors.green.shade800 : Colors.grey,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+                color: Colors.black, fontWeight: FontWeight.bold)),
       ),
-    );
-  }
-
-  Widget buildCategory(String assetPath, String label) {
-    return Container(
-      width: 64,
-      margin: const EdgeInsets.only(right: 12),
-      child: Column(
+      body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 24,
-            backgroundImage: AssetImage(assetPath),
+          // Product Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset("assets/farm_fresh.png"),
           ),
-          const SizedBox(height: 4),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          const SizedBox(height: 16),
+
+          // Product Title + Price + Discount
+          const Text("Farm Fresh Produce",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          const SizedBox(height: 8),
+          Row(
+            children: const [
+              Text("\$10.00",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black)),
+              SizedBox(width: 12),
+              Text("Discount 5%",
+                  style: TextStyle(
+                      backgroundColor: Color(0xFFDFF5E3),
+                      color: Colors.green,
+                      fontSize: 14)),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Delivery + Time + Rating
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Row(children: [
+                Icon(Icons.delivery_dining, color: Colors.grey),
+                SizedBox(width: 4),
+                Text("Delivered"),
+              ]),
+              Row(children: [
+                Icon(Icons.timer_outlined, color: Colors.grey),
+                SizedBox(width: 4),
+                Text("Time 10 min"),
+              ]),
+              Row(children: [
+                Icon(Icons.star, color: Colors.amber),
+                SizedBox(width: 4),
+                Text("3.5 Rating"),
+              ]),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          // Description
+          const Text("Discription",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 6),
+          const Text(
+            "Enjoy farm-fresh produce, handpicked for quality, packed with nutrition, and delivered with care! See more...",
+            style: TextStyle(color: Colors.grey),
+          ),
+
+          const SizedBox(height: 40),
+
+          // Add to Cart Row
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove, size: 20),
+                      onPressed: () {
+                        setState(() {
+                          if (quantity > 1) quantity--;
+                        });
+                      },
+                    ),
+                    Text(quantity.toString(),
+                        style: const TextStyle(fontSize: 16)),
+                    IconButton(
+                      icon: const Icon(Icons.add, size: 20),
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightGreen,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text("Add to Cart",
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
